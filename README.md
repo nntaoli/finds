@@ -1,9 +1,24 @@
-# build   
-go build -ldflags="-w -s"   
+# build
 
-# run   
-## 替换内容关键字
-./find-replace content --old "old xxx" --new "new xx" dirpath
+go build -ldflags="-w -s"
 
-## 批量重命名
-./find-replace rename --old="old" --new="new char" dirpath
+# run
+```shell
+$./find-replace
+
+NAME:
+   find-replace - A new cli application
+
+USAGE:
+   find-replace [global options] command [command options] [arguments...]
+
+COMMANDS:
+   content  replace content
+   rename   rename file name
+   empty    find and delete empty dir or file
+   help, h  Shows a list of commands or help for one command
+
+GLOBAL OPTIONS:
+   --help, -h  show help (default: false)
+
+```
