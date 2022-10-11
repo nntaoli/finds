@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"flag"
 	"github.com/urfave/cli/v2"
 	"io/ioutil"
@@ -117,7 +118,7 @@ func main() {
 				},
 				Action: func(context *cli.Context) error {
 					if context.NArg() == 0 {
-						panic("please input search dir path")
+						return errors.New("please input search dir path")
 					}
 					allFiles(context.Args().Get(0))
 					findAndReplaceAll(context.String("old"), context.String("new"), context.Bool("replace"))
@@ -140,11 +141,26 @@ func main() {
 				},
 				Action: func(context *cli.Context) error {
 					if context.NArg() == 0 {
-						panic("please input search dir path")
+						return errors.New("please input search dir path")
 					}
 					allFiles(context.Args().Get(0))
 					batchRename(context.String("old"), context.String("new"))
 					return nil
+				},
+			},
+			{
+				Name:  "empty",
+				Usage: "find and delete empty dir or file",
+				Flags: []cli.Flag{
+					&cli.BoolFlag{Name: "delete", Usage: "delete empty dir or file"},
+					&cli.BoolFlag{Name: "dir", Usage: "include dir", Value: true},
+					&cli.BoolFlag{Name: "file", Usage: "include file", Value: true},
+				},
+				Action: func(context *cli.Context) error {
+					if context.Args().Len() == 0 {
+						return errors.New("no  directory")
+					}
+					return findEmptyDirAndFile(context.Args().Get(0), context.Bool("delete"), context.Bool("dir"), context.Bool("file"))
 				},
 			},
 		},
